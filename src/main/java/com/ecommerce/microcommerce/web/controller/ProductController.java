@@ -65,6 +65,18 @@ public class ProductController {
         return produit;
     }
     
+    
+    // trierProduitsParOrdreAlphabetique
+    @GetMapping(value="/ProduitsTries")
+    public MappingJacksonValue trierProduitsParOrdreAlphabetique() {
+    	Iterable<Product> produitsTries = productDao.findByOrderByNomAsc();
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
+        MappingJacksonValue produitsTriesFiltres = new MappingJacksonValue(produitsTries);
+        produitsTriesFiltres.setFilters(listDeNosFiltres);
+        return produitsTriesFiltres;
+    }
+    
 
     // Calculer marge produit
     @GetMapping(value="/AdminProduits")
